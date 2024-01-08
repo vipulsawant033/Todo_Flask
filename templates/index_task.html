@@ -1,0 +1,131 @@
+<!-- 
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Task List</title>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet" />
+</head>
+
+<body>
+    <nav class="navbar navbar-expand-lg navbar-light" style="background: linear-gradient(to right, #00b4db, #0083b0); color: #fff;">
+        <a class="navbar-brand" href="#">Actalent</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarText" aria-controls="navbarText"
+            aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarText">
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item active">
+                    <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+    <div class="container mt-4">
+        <h2>To Do</h2>
+        <a href="{{ url_for('add_task') }}" class="btn btn-primary mb-2">Create</a>
+        <form method="post" action="{{ url_for('update_task', id=-1) }}">
+            <ul class="list-group">
+                {% for task in tasks %}
+                <li class="list-group-item">
+                    <div class="form-check">
+                        <input type="checkbox" class="form-check-input" id="completed_{{ task[0] }}" name="completed_tasks"
+                            value="{{ task[0] }}" />
+                        <label class="form-check-label" for="completed_{{ task[0] }}">{{ task[1] }}</label>
+                    </div>
+                    {% if task[2] %}
+                    <p class="mb-0">{{ task[2] }}</p>
+                    {% endif %}
+                    <span class="float-right">
+                        <a href="{{ url_for('update_task', id=task[0]) }}" class="btn btn-sm btn-warning">Edit</a>
+                        <a href="{{ url_for('delete_task', id=task[0]) }}" class="btn btn-sm btn-danger">Delete</a>
+                    </span>
+                </li>
+                {% endfor %}
+            </ul>
+        </form>
+    </div>
+</body>
+
+</html> -->
+
+
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Task List</title>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet" />
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
+</head>
+
+<body>
+    <nav class="navbar navbar-expand-lg navbar-light" style="background: linear-gradient(to right, #00b4db, #0083b0); color: #fff;">
+        <a class="navbar-brand" href="#">Actalent</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarText" aria-controls="navbarText"
+            aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarText">
+            <ul class="navbar-nav mr-auto">
+                <!-- <li class="nav-item active">
+                    <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
+                </li> -->
+            </ul>
+        </div>
+    </nav>
+    <div class="container mt-4">
+        {% with messages = get_flashed_messages(with_categories=true) %}
+    {% for category, message in messages %}
+    <script>
+        showToast("{{ message }}", "{{ category }}");
+    </script>
+    {% endfor %}
+    {% endwith %}
+        <h2>To Do</h2>
+        <a href="{{ url_for('add_task') }}" class="btn btn-primary float-right mb-2">Create</a>
+        <form method="post" action="{{ url_for('update_task', id=-1) }}">
+            <table class="table">
+                <thead style="background-color: aqua;">
+                    <tr>
+                        <th scope="col">Task</th>
+                        <th scope="col">Description</th>
+                        <th scope="col">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for task in tasks %}
+                    <tr>
+                        <td>
+                            <div class="form-check">
+                                <input type="checkbox" class="form-check-input" id="completed_{{ task[0] }}" name="completed_tasks"
+                                    value="{{ task[0] }}" />
+                                <label class="form-check-label" for="completed_{{ task[0] }}">{{ task[1] }}</label>
+                            </div>
+                        </td>
+                        <td>
+                            {% if task[2] %}
+                            {{ task[2] }}
+                            {% endif %}
+                        </td>
+                        <td>
+                            <a href="{{ url_for('update_task', id=task[0]) }}" class="btn btn-warning">Edit</a>
+                            <a href="{{ url_for('delete_task', id=task[0]) }}" class="btn btn-danger">Delete</a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </form>
+    </div>
+</body>
+
+</html>
